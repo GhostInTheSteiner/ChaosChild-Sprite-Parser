@@ -16,55 +16,55 @@ namespace ChaosChild_Sprite_Parser
                     "KUN",
                     new Dictionary<string, string>
                     {
-                        { "Aa", "armscrossed_sad" },
-                        { "A2", "armscrossed_happy" },
-                        { "A3", "armscrossed_depressed" },
-                        { "A4", "armscrossed_pissed" },
-                        { "A5", "armscrossed_sad" },
-                        { "A6", "armscrossed_happy" },
-                        { "A7", "armscrossed_depressed" },
-                        { "A8", "armscrossed_pissed" },
-                        { "A9", "armscrossed_pissed" },
+                        { "Aa", "armscrossed\\sad" },
+                        { "A2", "armscrossed\\happy" },
+                        { "A3", "armscrossed\\depressed" },
+                        { "A4", "armscrossed\\pissed" },
+                        { "A5", "armscrossed\\sad" },
+                        { "A6", "armscrossed\\happy" },
+                        { "A7", "armscrossed\\depressed" },
+                        { "A8", "armscrossed\\pissed" },
+                        { "A9", "armscrossed\\pissed" },
 
-                        { "Ba", "armsdown_sad" },
-                        { "B2", "armsdown_happy" },
-                        { "B3", "armsdown_depressed" },
-                        { "B4", "armsdown_pissed" },
-                        { "B5", "armsdown_sad" },
-                        { "B6", "armsdown_happy" },
-                        { "B7", "armsdown_depressed" },
-                        { "B8", "armsdown_pissed" },
-                        { "B9", "armsdown_pissed" },
+                        { "Ba", "armsdown\\sad" },
+                        { "B2", "armsdown\\happy" },
+                        { "B3", "armsdown\\depressed" },
+                        { "B4", "armsdown\\pissed" },
+                        { "B5", "armsdown\\sad" },
+                        { "B6", "armsdown\\happy" },
+                        { "B7", "armsdown\\depressed" },
+                        { "B8", "armsdown\\pissed" },
+                        { "B9", "armsdown\\pissed" },
 
-                        { "Ca", "armscrossed_sad" },
-                        { "C2", "armscrossed_happy" },
-                        { "C3", "armscrossed_depressed" },
-                        { "C4", "armscrossed_pissed" },
-                        { "C5", "armscrossed_sad" },
-                        { "C6", "armscrossed_happy" },
-                        { "C7", "armscrossed_depressed" },
-                        { "C8", "armscrossed_pissed" },
-                        { "C9", "armscrossed_pissed" },
+                        { "Ca", "armscrossed\\sad" },
+                        { "C2", "armscrossed\\happy" },
+                        { "C3", "armscrossed\\depressed" },
+                        { "C4", "armscrossed\\pissed" },
+                        { "C5", "armscrossed\\sad" },
+                        { "C6", "armscrossed\\happy" },
+                        { "C7", "armscrossed\\depressed" },
+                        { "C8", "armscrossed\\pissed" },
+                        { "C9", "armscrossed\\pissed" },
 
-                        { "Da", "armsdown_sad" },
-                        { "D2", "armsdown_happy" },
-                        { "D3", "armsdown_depressed" },
-                        { "D4", "armsdown_pissed" },
-                        { "D5", "armsdown_sad" },
-                        { "D6", "armsdown_happy" },
-                        { "D7", "armsdown_depressed" },
-                        { "D8", "armsdown_pissed" },
-                        { "D9", "armsdown_pissed" }
+                        { "Da", "armsdown\\sad" },
+                        { "D2", "armsdown\\happy" },
+                        { "D3", "armsdown\\depressed" },
+                        { "D4", "armsdown\\pissed" },
+                        { "D5", "armsdown\\sad" },
+                        { "D6", "armsdown\\happy" },
+                        { "D7", "armsdown\\depressed" },
+                        { "D8", "armsdown\\pissed" },
+                        { "D9", "armsdown\\pissed" }
                     }
                 },
                 {
                     "ARI",
                     new Dictionary<string, string>
                     {
-                        { "Aa", "armscrossed_sad" },
-                        { "A2", "armscrossed_happy" },
-                        { "A3", "armscrossed_depressed" },
-                        { "A4", "armscrossed_pissed" }
+                        { "Aa", "armscrossed\\sad" },
+                        { "A2", "armscrossed\\happy" },
+                        { "A3", "armscrossed\\depressed" },
+                        { "A4", "armscrossed\\pissed" }
                     }
                 }
             };
@@ -80,13 +80,15 @@ namespace ChaosChild_Sprite_Parser
                     //ARI_ALA_40000100.png
                     //ARI_ALA_40000200.png
 
+                    int i = 0;
+
                     string fileName = new FileInfo(filePath).Name;
                     Console.WriteLine(fileName);
 
                     if (fileName[8].Equals('6'))
                         continue; // skip facial features
                     
-                    string[] fileNameNew = new string[5];
+                    string[] subFilePathTarget = new string[5];
 
                     string characterCode = fileName.Substring(0, 3);
 
@@ -95,20 +97,37 @@ namespace ChaosChild_Sprite_Parser
 
                     //character name
 
-                    fileNameNew[0] = characterCode;
+                    subFilePathTarget[i++] = characterCode;
 
 
 
 
-                    //pose + face
+                    //pose + face + clothing
+
+                    string clothing =
+
+                        fileName[4] == 'A' ?
+                            "school" :
+
+                        fileName[4] == 'B' ?
+                            "casual" :
+
+                            //else
+                            "unknown";
 
                     try
                     {
-                        fileNameNew[1] = characterPoseFaceLookup[characterCode][fileName[6].ToString() + fileName[13].ToString()];
+                        subFilePathTarget[i] = characterPoseFaceLookup[characterCode][fileName[6].ToString() + fileName[13].ToString()];
+
+
+                        var subFilePathTargetParts = subFilePathTarget[i].Split("\\");
+                        subFilePathTargetParts[1] = clothing + "_" + subFilePathTargetParts[1];
+
+                        subFilePathTarget[i++] = string.Join("\\", subFilePathTargetParts);
                     }
                     catch
                     {
-                        fileNameNew[1] = "unknown_unknown";
+                        subFilePathTarget[i++] = "pose" + fileName[6].ToString() + "\\" + clothing + "_face" + fileName[13].ToString();
                     }
 
 
@@ -116,7 +135,7 @@ namespace ChaosChild_Sprite_Parser
 
                     //size
 
-                    fileNameNew[2] =
+                    subFilePathTarget[i++] =
 
                         fileName[5] == 'X' ?
                             "closeup" :
@@ -138,7 +157,7 @@ namespace ChaosChild_Sprite_Parser
 
                     //mouth open width
 
-                    fileNameNew[3] =
+                    subFilePathTarget[i++] =
 
                         fileName[15] == '0' ?
                             "silent" :
@@ -154,24 +173,11 @@ namespace ChaosChild_Sprite_Parser
 
 
 
+                    string subFilePathTargetStr = string.Join("_", subFilePathTarget) + ".png";
+                    string subFolderPathTargetStr = subFilePathTargetStr.Split("\\")[0];
 
-                    //clothing
-
-                    fileNameNew[4] =
-
-                        fileName[4] == 'A' ?
-                            "school" :
-
-                        fileName[4] == 'B' ?
-                            "casual" :
-
-                        //else
-                            "unknown";
-
-
-
-
-                    File.Copy(filePath, characterSpritesPathRenamed + "\\" + string.Join("_", fileNameNew) + ".png", true);
+                    Directory.CreateDirectory(characterSpritesPathRenamed + "\\" + subFolderPathTargetStr);
+                    File.Copy(filePath, characterSpritesPathRenamed + "\\" + subFilePathTargetStr, true);
                 }
             }
         }
